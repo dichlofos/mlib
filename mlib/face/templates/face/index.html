@@ -1,0 +1,20 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="{% static 'face/style.css' %}" />
+        <title>My Library</title>
+    </head>
+    <body>
+        <h1>Search books</h1>
+
+        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+        <form action="{% url 'face:index' %}" method="post">
+            {% csrf_token %}
+            <input type="text" name="search" id="search"/>
+            <label for="search">Search text</label><br />
+            <input type="submit" value="Search" />
+        </form>
+    </body>
+</html>
