@@ -14,6 +14,7 @@ for line in f:
     bl = []
     btok = ''
     for tok in al:
+        print "tok=QQQ" + tok + "ZZZ"
         if tok[0:1] == '"':
             tok = tok[1:len(tok) - 1]
         tok = tok.replace('""', '"')
@@ -23,6 +24,7 @@ for line in f:
     for x in bl:
         fo.write(x.encode('utf8') + '\t')
     fo.write('\n')
+    sys.exit(0)
 
 f.close()
 fo.close()
