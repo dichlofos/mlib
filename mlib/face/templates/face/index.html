@@ -16,5 +16,14 @@
             <label for="search">Search text</label><br />
             <input type="submit" value="Search" />
         </form>
+
+        {% if book_items %}
+            <ul>
+            {% for book_item in book_items %}
+                <li>{{ book_item }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+
     </body>
 </html>

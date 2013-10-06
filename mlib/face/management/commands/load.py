@@ -35,6 +35,10 @@ class Command(BaseCommand):
                 tok = tok.replace('""', '"')
                 bl.append(tok)
 
+            if len(bl) < 8:
+                print bl
+                sys.exit(1)
+
             book_file_name = bl[7]
             # skip phantom book
             if '20070623_D41D8CD9' in book_file_name:
@@ -81,8 +85,7 @@ class Command(BaseCommand):
                         year=bl[5],
                         publication=bl[6],
                         file_name=bl[7],
-                        ed2k_hash=bl[8]
-                        )
+                        ed2k_hash=bl[8])
                 b.save()
                 book_count += 1
             except BaseException as e:

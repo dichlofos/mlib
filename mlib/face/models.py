@@ -11,3 +11,18 @@ class Book(models.Model):
     file_name = models.CharField(max_length=30)
     ed2k_hash = models.CharField(max_length=32)
     language =  models.CharField(max_length=2)
+
+    def authors(self):
+        authors = self.author1
+        if self.author2:
+            authors += ', ' + self.author2
+        if self.author3:
+            authors += ', ' + self.author3
+        return authors
+
+    def __unicode__(self):
+        result = self.authors()
+        if result:
+            result += '. '
+        result += self.title
+        return result
