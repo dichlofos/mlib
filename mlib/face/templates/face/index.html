@@ -1,29 +1,31 @@
-{% load staticfiles %}
 <!DOCTYPE html>
 <html>
+{% load staticfiles %}
     <head>
         <link rel="stylesheet" type="text/css" href="{% static 'face/style.css' %}" />
-        <title>My Library</title>
+        <title>Yet Another Book Search</title>
     </head>
     <body>
-        <h1>Search books</h1>
+        <h1>Yet Another Book Search</h1>
 
         {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
         <form action="{% url 'face:index' %}" method="post">
             {% csrf_token %}
-            <input type="text" name="search" id="search"/>
-            <label for="search">Search text</label><br />
-            <input type="submit" value="Search" />
+            <div>
+                <input type="text" name="search" id="search"/>
+                <input type="submit" value="Search" />
+            </div>
         </form>
 
         {% if book_items %}
             <ul>
             {% for book_item in book_items %}
-                <li>{{ book_item }}</li>
+                <li><a href="{{ book_item.link }}">{{ book_item }}</a></li>
             {% endfor %}
             </ul>
+        {% else %}
+            <div class="error">Sorry, nothing found</div>
         {% endif %}
-
     </body>
 </html>

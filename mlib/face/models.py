@@ -1,5 +1,7 @@
 from django.db import models
 
+BOOK_ROOT = 'static/books'
+
 class Book(models.Model):
     num = models.IntegerField()
     author1 = models.CharField(max_length=80)
@@ -19,6 +21,9 @@ class Book(models.Model):
         if self.author3:
             authors += ', ' + self.author3
         return authors
+
+    def link(self):
+        return BOOK_ROOT + '/' + self.file_name[0:6] + '/' + self.file_name
 
     def __unicode__(self):
         result = self.authors()
