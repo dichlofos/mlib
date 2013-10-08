@@ -11,7 +11,7 @@ class Book(models.Model):
     year =  models.CharField(max_length=4)
     publication = models.CharField(max_length=100)
     file_name = models.CharField(max_length=30)
-    ed2k_hash = models.CharField(max_length=32)
+    ed2k_hash = models.CharField(max_length=32, db_index=True)
     language =  models.CharField(max_length=2)
 
     def authors(self):

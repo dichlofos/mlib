@@ -33,6 +33,7 @@ class Command(BaseCommand):
                 print "Loading", ed2k_hash
                 try:
                     b = Book(
+                            num=0,
                             file_name=file_name,
                             ed2k_hash=ed2k_hash)
                     b.save()
