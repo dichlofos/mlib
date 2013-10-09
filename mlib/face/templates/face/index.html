@@ -3,20 +3,23 @@
 {% load staticfiles %}
     <head>
         <link rel="stylesheet" type="text/css" href="{% static 'face/style.css' %}" />
+        <meta charset="utf-8"/>
         <title>Yet Another Book Search</title>
     </head>
     <body>
         <h1>Yet Another Book Search</h1>
 
-        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-
         <form action="{% url 'face:index' %}" method="post">
             {% csrf_token %}
             <div>
-                <input type="text" name="search" id="search"/>
+                <input type="text" name="search" id="search" value="{{ search_text }}"/>
                 <input type="submit" value="Search" />
             </div>
         </form>
+
+        {% if error_message %}
+            <div class="error">{{ error_message }}</div>
+        {% endif %}
 
         {% if book_items %}
             <ul>
@@ -25,7 +28,9 @@
             {% endfor %}
             </ul>
         {% else %}
-            <div class="error">Sorry, nothing found</div>
+            {% if search_text %}
+                <div class="error">Sorry, nothing found</div>
+            {%endif %}
         {% endif %}
     </body>
 </html>

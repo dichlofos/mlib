@@ -4,7 +4,7 @@ BOOK_ROOT = 'static/books'
 
 class Book(models.Model):
     num = models.IntegerField()
-    author1 = models.CharField(max_length=80)
+    author1 = models.CharField(max_length=80, db_index=True)
     author2 = models.CharField(max_length=80)
     author3 = models.CharField(max_length=80)
     title = models.CharField(max_length=300)
