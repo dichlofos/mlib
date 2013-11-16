@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
+"""
+Load ed2k hashes calculated on the files
+using calc-ed2k.sh
+"""
 
 from django.core.management.base import BaseCommand, CommandError
 from face.models import Book
 
-import os
-import sys
-
 class Command(BaseCommand):
+    """ Django command """
+
     args = '<file_name>'
     help = 'Loads ed2k hashes calculated on files using calc-ed2k.sh'
 
@@ -15,35 +18,35 @@ class Command(BaseCommand):
             raise CommandError('File name to load does not specified')
 
         file_name = args[0]
-        f = open(file_name, 'r')
+        input_handle = open(file_name, 'r')
         book_count = 0
-        for line in f:
+        for line in input_handle:
             line = line.strip()
             if not line:
                 continue
 
-            al = line.split(' ')
-            path = al[0].strip()
-            ed2k_hash = al[1].strip()
+            elements = line.split(' ')
+            path = elements[0].strip()
+            ed2k_hash = elements[1].strip()
 
-            af = path.split('/')
-            file_name = af[3]
+            path_elem = path.split('/')
+            file_name = path_elem[3]
             srch = Book.objects.filter(ed2k_hash=ed2k_hash)
             if not srch:
                 print "Loading", ed2k_hash
                 try:
-                    b = Book(
+                    book = Book(
                             num=0,
                             file_name=file_name,
                             ed2k_hash=ed2k_hash)
-                    b.save()
+                    book.save()
                     book_count += 1
-                except BaseException as e:
+                except BaseException as exc:
                     print "Problem with book:"
-                    print e
+                    print exc
                     print '----------------------'
             else:
                 print "Exists:", srch[0]
 
-        f.close()
+        input_handle.close()
         self.stdout.write('Successfully processed "%d"' % book_count)
