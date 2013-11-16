@@ -16,18 +16,56 @@ def parse_book(books_path, index):
     file_name = books_path + '/' + dir_name + '/book.' + str(index)
     contents = open(file_name, 'r').read().decode('cp1251')
     matches = re.finditer("<b>(.*?)</b>(.*?)<br><br>", contents)
+    print str(index) + ": [ " + file_name + " ]"
+
+    title = None
+    authors = None
+    ed2k_link = None
+
     for match in matches:
         key = match.group(1).strip()
         if key == u"Название:":
             title = html_to_text(match.group(2))
         elif key == u"Авторы:":
             authors = html_to_text(match.group(2))
-        elif key == u"Авторы:":
-            authors = html_to_text(match.group(2))
         elif key == u"ed2k:":
             ed2k_link = html_to_text(match.group(2))
 
-        print title, authors, ed2k_link
+    ed2k_hash = None
+
+    if ed2k_link is not None:
+        hash_match = re.search("hash=([0-9a-f]+)", ed2k_link)
+        if hash_match is not None:
+            ed2k_hash = hash_match.group(1)
+        else:
+            print "ed2k error: ", ed2k_link
+    if ed2k_hash is None:
+        print "Hash not found on page, cannot merge"
+        return (0, 1, 0)
+
+    srch = Book.objects.filter(ed2k_hash=ed2k_hash)
+    if not srch:
+        print "Unknown ed2k hash:", ed2k_hash
+        return (0, 0, 1)
+
+    book = srch[0]
+    print "Merging", ed2k_hash
+
+    """
+    try:
+        book = Book(
+                num=0,
+                file_name=file_name,
+                ed2k_hash=ed2k_hash)
+        book.save()
+    except BaseException as exc:
+        print "Problem with book:"
+        print exc
+        print '----------------------'
+    """
+
+    print "  ", title, authors, ed2k_hash
+    return (1, 0, 0)
 
 
 class Command(BaseCommand):
@@ -43,25 +81,16 @@ class Command(BaseCommand):
 
         books_path = args[0]
         book_count = 0
-        for i in xrange(1, 150000):
-            parse_book(books_path, i)
+        no_hash_count = 0
+        unk_hash_count = 0
 
-        """
-            srch = Book.objects.filter(ed2k_hash=ed2k_hash)
-            if not srch:
-                print "Loading", ed2k_hash
-                try:
-                    book = Book(
-                            num=0,
-                            file_name=file_name,
-                            ed2k_hash=ed2k_hash)
-                    book.save()
-                    book_count += 1
-                except BaseException as exc:
-                    print "Problem with book:"
-                    print exc
-                    print '----------------------'
-            else:
-                print "Exists:", srch[0]
-        """
-        self.stdout.write('Successfully parsed "%d"' % book_count)
+        for i in xrange(1, 122528):
+            good, no_hash, unk_hash = parse_book(books_path, i)
+            book_count += good
+            no_hash_count += no_hash
+            unk_hash_count += unk_hash
+
+        self.stdout.write('Successfully parsed %d book(s)\n' \
+            'No hash found in %d book(s)\n' \
+            'Unknown hash in %d book(s)' % \
+            (book_count, no_hash_count, unk_hash_count))
