@@ -17,8 +17,7 @@ class Command(BaseCommand):
         if not args or not args[0]:
             raise CommandError('File name to load does not specified')
 
-        file_name = args[0]
-        input_handle = open(file_name, 'r')
+        input_handle = open(args[0], 'r')
         book_count = 0
         for line in input_handle:
             line = line.strip()
