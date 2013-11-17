@@ -12,6 +12,11 @@ import lxml.html
 
 def html_to_text(html):
     """ Translate html to plain text """
+    if html is None:
+        return ''
+    html = html.strip()
+    if html == '':
+        return ''
     text = lxml.html.fromstring(html)
     return text.text_content()
 
@@ -111,14 +116,17 @@ class Command(BaseCommand):
         unk_hash_count = 0
         already_count = 0
 
-        for i in xrange(1, 122528):
+        for i in xrange(40000, 122528):
             good, no_hash, unk_hash, already = parse_book(books_path, i)
             book_count += good
             no_hash_count += no_hash
             unk_hash_count += unk_hash
             already_count += already
 
-        self.stdout.write('Successfully parsed %d book(s)\n' \
+        self.stdout.write(
+            'Successfully parsed %d book(s)\n' \
+            'Already done %d book(s)\n' \
             'No hash found in %d book(s)\n' \
             'Unknown hash in %d book(s)' % \
-            (book_count, no_hash_count, unk_hash_count))
+            (book_count, already_count,
+            no_hash_count, unk_hash_count))
