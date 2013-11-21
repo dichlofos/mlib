@@ -24,7 +24,8 @@
         {% if book_items %}
             <ul>
             {% for book_item in book_items %}
-                <li><a href="{{ book_item.link }}">{{ book_item }}</a></li>
+                <li><a href="{{ book_item.link }}"><i>{{ book_item.authors }}</i>&nbsp;
+                    {{ book_item.title }}</a></li>
             {% endfor %}
             </ul>
         {% else %}

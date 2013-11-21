@@ -3,6 +3,7 @@ from django.db import models
 BOOK_ROOT = 'static/books'
 
 class Book(models.Model):
+
     num = models.IntegerField()
     author1 = models.CharField(max_length=80, db_index=True)
     author2 = models.CharField(max_length=80)
@@ -15,6 +16,7 @@ class Book(models.Model):
     language =  models.CharField(max_length=2)
 
     def authors(self):
+        """ Get authors list as single string """
         authors = self.author1
         if self.author2:
             authors += ', ' + self.author2
@@ -28,6 +30,9 @@ class Book(models.Model):
     def __unicode__(self):
         result = self.authors()
         if result:
-            result += '. '
-        result += self.title
+            result += ' '
+        result += self.title + ' '
+        if self.year:
+            result += '[' + self.year + '] '
+
         return result
