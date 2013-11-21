@@ -29,11 +29,11 @@ def parse_book(books_path, index):
     matches = re.finditer("<b>(.*?)</b>(.*?)<br><br>", contents)
     print str(index) + ": [ " + file_name + " ]"
 
-    authors = None
-    title = None
-    year = None
-    publication = None
-    ed2k_link = None
+    authors = ''
+    title = ''
+    year = ''
+    publication = ''
+    ed2k_link = ''
 
     for match in matches:
         key = match.group(1).strip()
@@ -49,25 +49,25 @@ def parse_book(books_path, index):
             ed2k_link = match.group(2)
 
     author_list = []
-    if authors is not None:
+    if authors:
         author_list = authors.split(',')
 
     while len(author_list) < 3:
-        author_list.append(None)
+        author_list.append('')
 
     for author in author_list:
-        if author is not None:
+        if author:
             author = author.strip()
 
-    ed2k_hash = None
+    ed2k_hash = ''
 
-    if ed2k_link is not None:
+    if ed2k_link:
         hash_match = re.search("hash=([0-9a-f]+)", ed2k_link)
         if hash_match is not None:
             ed2k_hash = hash_match.group(1)
         else:
             print "ed2k error: ", ed2k_link
-    if ed2k_hash is None:
+    if not ed2k_hash:
         print "Hash not found on page, cannot merge"
         return (0, 1, 0, 0)
 
@@ -76,6 +76,7 @@ def parse_book(books_path, index):
         print "Unknown ed2k hash:", ed2k_hash
         return (0, 0, 1, 0)
 
+    #print srch
     book = srch[0]
     if book.num != 0:
         return (0, 0, 0, 1)
@@ -116,7 +117,7 @@ class Command(BaseCommand):
         unk_hash_count = 0
         already_count = 0
 
-        for i in xrange(40000, 122528):
+        for i in xrange(80000, 122528):
             good, no_hash, unk_hash, already = parse_book(books_path, i)
             book_count += good
             no_hash_count += no_hash
