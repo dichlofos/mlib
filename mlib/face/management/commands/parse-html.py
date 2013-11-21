@@ -6,6 +6,7 @@ Parse html pages and merge them into database
 from django.core.management.base import BaseCommand, CommandError
 from face.models import Book
 import re
+import sys
 
 import lxml.html
 
@@ -18,7 +19,10 @@ def html_to_text(html):
     if html == '':
         return ''
     text = lxml.html.fromstring(html)
-    return text.text_content()
+    content = text.text_content()
+    if content is None:
+        content = ''
+    return content
 
 
 def parse_book(books_path, index):
@@ -83,19 +87,29 @@ def parse_book(books_path, index):
 
     print "Merging", ed2k_hash
 
+    # apply some fixups
+    if index == 94131:
+        year = 1951
+    elif index == 111029:
+        year = 1989
+
     try:
-        book.num = index
-        book.author1 = author_list[0]
-        book.author2 = author_list[1]
-        book.author3 = author_list[2]
-        book.title = title
-        book.year = year
-        book.publication = publication
+        book.num = unicode(index)
+        book.author1 = unicode(author_list[0])
+        book.author2 = unicode(author_list[1])
+        book.author3 = unicode(author_list[2])
+        book.title = unicode(title)
+        book.year = unicode(year)
+        book.publication = unicode(publication)
         book.save()
     except BaseException as exc:
         print "Problem with book:"
         print exc
         print '----------------------'
+        print index, year
+        print 'Import FAILED'
+
+        sys.exit(1)
 
     return (1, 0, 0, 0)
 
@@ -117,7 +131,7 @@ class Command(BaseCommand):
         unk_hash_count = 0
         already_count = 0
 
-        for i in xrange(80000, 122528):
+        for i in xrange(111029, 122528):
             good, no_hash, unk_hash, already = parse_book(books_path, i)
             book_count += good
             no_hash_count += no_hash
