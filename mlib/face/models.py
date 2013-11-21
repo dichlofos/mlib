@@ -3,6 +3,7 @@ from django.db import models
 BOOK_ROOT = 'static/books'
 
 class Book(models.Model):
+    """ Book """
 
     num = models.IntegerField()
     author1 = models.CharField(max_length=80, db_index=True)
