@@ -28,6 +28,9 @@ class Book(models.Model):
     def link(self):
         return BOOK_ROOT + '/' + self.file_name[0:6] + '/' + self.file_name
 
+    def download_link(self):
+        return 'download/' + str(self.id)
+
     def __unicode__(self):
         result = self.authors()
         if result:

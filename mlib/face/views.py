@@ -4,6 +4,8 @@ from django.http import HttpResponseRedirect
 
 from face.models import Book
 
+import os
+
 def index(request):
     if 'search' in request.POST:
         text = request.POST['search']
@@ -36,7 +38,13 @@ def index(request):
 
 
 def download(request, book_id):
-    """ Do book redirect """
-    response = HttpResponseRedirect('/b/200409/20040910_ISSMANK.djvu')
-    response['Content-Disposition'] = 'attachment; filename="foo.djvu"'
+    """ Make a symlink to real file to obfuscate its real name """
+
+    uuid = '94bcaa9d-864b-4b51-87a2-af67cfd42d09'
+    book = Book.objects.get(id=book_id)
+
+    os.symlink('/storage/whiterose/libraries/lib.mexmat.ru/Lib/' + \
+        book.file_name,
+        '/var/www/vhosts/mlib/b/storage/' + uuid)
+    response = HttpResponseRedirect('/b/storage/' + uuid)
     return response
