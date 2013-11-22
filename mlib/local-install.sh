@@ -2,10 +2,13 @@
 
 set -xe
 
-DEST="/var/www/vhosts/mlib"
+dest="/var/www/vhosts/mlib"
 find . -name '*.pyc' | xargs rm -f
-sudo rm -rf $DEST
-sudo mkdir -p $DEST
-sudo cp -r . "$DEST"
-rm -rf $DEST/static
-sudo ln -sf /var/www/books $DEST/books
+sudo rm -rf "$dest"
+sudo mkdir -p $dest
+sudo cp -r . "$dest"
+books="$dest/b"
+sudo bash -xe <<EOF
+unlink "$books" 2>/dev/null || true
+EOF
+sudo ln -sf /storage/whiterose/libraries/lib.mexmat.ru/Lib $books

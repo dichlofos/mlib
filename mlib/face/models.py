@@ -1,6 +1,6 @@
 from django.db import models
 
-BOOK_ROOT = 'static/books'
+BOOK_ROOT = '/b'
 
 class Book(models.Model):
     """ Book """
