@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.db.models import Q
+from django.http import HttpResponseRedirect
 
 from face.models import Book
 
@@ -34,4 +35,8 @@ def index(request):
     return render(request, 'face/index.html', {})
 
 
-
+def download(request, book_id):
+    """ Do book redirect """
+    response = HttpResponseRedirect('/b/200409/20040910_ISSMANK.djvu')
+    response['Content-Disposition'] = 'attachment; filename="foo.djvu"'
+    return response
