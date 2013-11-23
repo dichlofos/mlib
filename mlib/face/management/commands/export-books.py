@@ -22,8 +22,8 @@ def export_book(book, cat, script):
     download_name = str(uuid.uuid4()) + '.' + book.ext()
     html_path = dir_name + '/' +  download_name
 
-    command = 'cp ' + BOOKS_SOURCE + '/' + book.path() + \
-        ' ' + dest_root + '/' + html_path
+    command = 'cp \'' + BOOKS_SOURCE + '/' + book.path() + \
+        '\' ' + dest_root + '/' + html_path
 
     script.write(command + '\n')
 
