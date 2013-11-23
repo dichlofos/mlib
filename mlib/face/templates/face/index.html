@@ -17,6 +17,11 @@
         <title>Yet Another Book Search</title>
     </head>
     <body>
+        <div class="copy-left text-right">
+            &copy; <a href="https://vk.com/dichlofos">Mikhail Veltshchev</a>,
+            2013&nbsp;&ndash;&nbsp;&nbsp;All rights reversed. For <b>educational</b> purpose only.
+            Please respect authors and their copyrights
+        </div>
         <div class="main">
             <form role="form" action="{% url 'face:index' %}" method="post">
                 {% csrf_token %}
