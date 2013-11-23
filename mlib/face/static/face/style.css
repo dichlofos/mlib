@@ -12,6 +12,15 @@ div.result {
     padding-top: 20px;
 }
 
+div.copy-left {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    height: 20px;
+    right: 5px;
+}
+
+/*
 a:link, a:visited {
     color: #00009f;
     text-decoration: none;
@@ -20,6 +29,7 @@ a:hover, a:active {
     text-decoration: none;
     color: #4444ff;
 }
+*/
 
 div.error {
     padding: 5px 0px 3px 3px;
