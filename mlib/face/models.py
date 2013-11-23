@@ -1,3 +1,4 @@
+""" face models """
 from django.db import models
 
 BOOK_ROOT = '/b'
@@ -25,8 +26,12 @@ class Book(models.Model):
             authors += ', ' + self.author3
         return authors
 
+    def path(self):
+        """ Get book path related to Lib folder """
+        return self.file_name[0:6] + '/' + self.file_name
+
     def link(self):
-        return BOOK_ROOT + '/' + self.file_name[0:6] + '/' + self.file_name
+        return BOOK_ROOT + '/' + self.path()
 
     def download_link(self):
         return 'download/' + str(self.id)

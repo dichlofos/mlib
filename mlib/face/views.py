@@ -43,8 +43,8 @@ def download(request, book_id):
     uuid = '94bcaa9d-864b-4b51-87a2-af67cfd42d09'
     book = Book.objects.get(id=book_id)
 
-    os.symlink('/storage/whiterose/libraries/lib.mexmat.ru/Lib/' + \
-        book.file_name,
+    os.symlink(
+        '/storage/whiterose/libraries/lib.mexmat.ru/Lib/' + book.path(),
         '/var/www/vhosts/mlib/b/storage/' + uuid)
     response = HttpResponseRedirect('/b/storage/' + uuid)
     return response
