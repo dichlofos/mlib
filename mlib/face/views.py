@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 from face.models import Book
 
 import os
+import uuid
 
 def index(request):
     if 'search' in request.POST:
@@ -40,11 +41,11 @@ def index(request):
 def download(request, book_id):
     """ Make a symlink to real file to obfuscate its real name """
 
-    uuid = '94bcaa9d-864b-4b51-87a2-af67cfd42d09'
     book = Book.objects.get(id=book_id)
+    download_name = str(uuid.uuid4()) + '.' + book.ext()
 
     os.symlink(
         '/storage/whiterose/libraries/lib.mexmat.ru/Lib/' + book.path(),
-        '/var/www/vhosts/mlib/b/storage/' + uuid)
-    response = HttpResponseRedirect('/b/storage/' + uuid)
+        '/var/www/vhosts/mlib/b/storage/' + download_name)
+    response = HttpResponseRedirect('/b/storage/' + download_name)
     return response

@@ -1,6 +1,8 @@
 """ face models """
 from django.db import models
 
+import re
+
 BOOK_ROOT = '/b'
 
 class Book(models.Model):
@@ -35,6 +37,9 @@ class Book(models.Model):
 
     def download_link(self):
         return 'download/' + str(self.id)
+
+    def ext(self):
+        return re.sub(r'.*\.', '', self.file_name)
 
     def __unicode__(self):
         result = self.authors()
