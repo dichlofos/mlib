@@ -3,8 +3,6 @@ from django.db import models
 
 import re
 
-BOOK_ROOT = '/b'
-
 class Book(models.Model):
     """ Book """
 
@@ -28,17 +26,19 @@ class Book(models.Model):
             authors += ', ' + self.author3
         return authors
 
+
     def path(self):
         """ Get book path related to Lib folder """
         return self.file_name[0:6] + '/' + self.file_name
 
-    def link(self):
-        return BOOK_ROOT + '/' + self.path()
 
     def download_link(self):
+        """ Get download url """
         return 'download/' + str(self.id)
 
+
     def ext(self):
+        """ Get book file extension """
         return re.sub(r'.*\.', '', self.file_name)
 
     def __unicode__(self):
