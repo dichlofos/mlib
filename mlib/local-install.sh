@@ -16,4 +16,7 @@ books="$dest/b"
 sudo mkdir -p "$dest/b/storage"
 sudo chmod -R 777 "$dest/b/storage"
 
+sudo mkdir -p $dest/admin
+sudo ln -sf /usr/lib/python2.7/site-packages/django/contrib/admin/static "$dest/admin"
+
 echo "Installation to $dest completed"
