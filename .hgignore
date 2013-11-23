@@ -1,1 +1,8 @@
 .*\.pyc$
+
+# this file should NOT be commited in main repo
+^mlib/mlib/settings.py$
+
+# sublime projects
+^mlib.sublime-project$
+^mlib.sublime-workspace$
