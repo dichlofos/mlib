@@ -11,6 +11,9 @@ sudo rm -rf "$dest"
 sudo mkdir -p $dest
 sudo cp -r . "$dest"
 
+sudo unlink "$dest/mlib/settings.py"
+sudo cp ~mvel/work/settings/application-settings/mlib.local/$( hostname )/settings.py "$dest/mlib/"
+
 # prepare tmp storage
 books="$dest/b"
 sudo mkdir -p "$dest/b/storage"
