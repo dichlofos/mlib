@@ -6,6 +6,7 @@
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
 
+        <script src="//code.jquery.com/jquery-1.10.1.min.js"></script>
         <!-- Optional theme -->
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap-theme.min.css">
 
@@ -48,7 +49,7 @@
             </ul>
         {% else %}
             {% if search_text %}
-                <div class="error">Sorry, nothing found</div>
+                <div class="text-danger">Sorry, nothing found</div>
             {%endif %}
         {% endif %}
         </div>
