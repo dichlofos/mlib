@@ -8,7 +8,8 @@ from face.models import Book
 import uuid
 
 BOOKS_DEST = '~/disk'
-BOOKS_SOURCE = '/storage/whiterose/libraries/lib.mexmat.ru/Lib'
+#BOOKS_SOURCE = '/storage/whiterose/libraries/lib.mexmat.ru/Lib'
+BOOKS_SOURCE = '/home/mvel/disk/mlib'
 
 
 def export_book(book, cat, script):
@@ -20,9 +21,12 @@ def export_book(book, cat, script):
     command = 'mkdir -p ' + dest_root + '/' + dir_name
     script.write(command + '\n')
     download_name = str(uuid.uuid4()) + '.' + book.ext()
-    html_path = dir_name + '/' +  download_name
+    html_path = dir_name + '/' + download_name
 
-    command = 'cp \'' + BOOKS_SOURCE + '/' + book.path() + \
+    #command = 'cp \'' + BOOKS_SOURCE + '/' + book.path() + \
+    #   '\' ' + dest_root + '/' + html_path
+
+    command = 'mv \'' + BOOKS_SOURCE + '/' + book.path() + \
         '\' ' + dest_root + '/' + html_path
 
     script.write(command + '\n')
@@ -51,8 +55,9 @@ class Command(BaseCommand):
         script.write('#!/usr/bin/env bash\n')
         script.write('set -xe\n')
 
-        cat.write('<!DOCTYPE html>\n<html>\n' + \
-            '<head>\n<meta charset="utf-8"/>\n' + \
+        cat.write(
+            '<!DOCTYPE html>\n<html>\n' +
+            '<head>\n<meta charset="utf-8"/>\n' +
             '<title>Some books</title>\n</head>\n<body>\n')
 
         for book in Book.objects.all():
@@ -63,6 +68,6 @@ class Command(BaseCommand):
         cat.write('</body></html>\n')
 
         self.stdout.write(
-            'Successfully exported catalogue to "%s"\n' \
-            'Copy script is written to "%s"\n' % \
-            (output_catalog, copy_script))
+            'Successfully exported catalogue to "{0}"\n'
+            'Copy script is written to "{1}"\n'.format(
+            output_catalog, copy_script))
